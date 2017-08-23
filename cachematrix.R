@@ -1,12 +1,12 @@
 ## Put comments here that give an overall description of what your
 ## functions do
 
-## make a special vector to cach the inverse of a matrix
+## make a special vector to cache the inverse of a matrix
 
 makeCacheMatrix <- function(x = matrix()) {
       inverse <- NULL
       set <- function(y) {
-            inverse <<- y
+            x <<- y
             inverse <<- NULL
       }
       get <- function()
@@ -44,14 +44,15 @@ cacheSolve <- function(x, ...) {
 sanityTestCase <- function() {
       matrix <- diag(3)
       cacheFunction <- makeCacheMatrix(matrix)
+      if(!all(cacheFunction$get()==matrix))
+            return(FALSE)
       inverse = cacheSolve(cacheFunction)
-      inverse2 <- cacheSolve(cacheFunction)
       product <- matrix %*% inverse
       if (!all(product == diag(3)))
             return(FALSE)
-      product2 <- matrix %*% inverse
+      inverse2 <- cacheSolve(cacheFunction)
+      product2 <- matrix %*% inverse2
       if (!all(product2 == diag(3)))
             return(FALSE)
       TRUE
-
 }
